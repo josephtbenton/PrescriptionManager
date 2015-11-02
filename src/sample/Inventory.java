@@ -16,7 +16,7 @@ public class Inventory {
         this.drugList = FXCollections.observableArrayList();
         String create = "Create table Inventory (Drug_ID INT, Drugs CHAR(255), Strength CHAR(255), Count INT)";
         DatabaseMetaData base = con.getMetaData();
-        ResultSet alreadyExists = base.getTablePrivileges(null, null, "Inventory");
+        ResultSet alreadyExists = base.getTables(null, null, "Inventory", null);
         if (!alreadyExists.next()) {
             stat.execute(create);
         }
