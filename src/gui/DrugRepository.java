@@ -13,7 +13,7 @@ public class DrugRepository {
     //constructor creates a table if one does not exist else just initializes connection to sqlite
     public DrugRepository() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        con = DriverManager.getConnection("jdbc:sqlite:drugs");
+        con = DriverManager.getConnection("jdbc:sqlite:prescriptionDB");
         stat = con.createStatement();
         this.drugList = FXCollections.observableArrayList();
         String create = "Create table Inventory (Drug_ID INT, Name CHAR(255), Strength CHAR(255), Count INT)";
@@ -41,6 +41,13 @@ public class DrugRepository {
         return count.getInt(1);
     }
 
+    public String getStrength(int ID) throws SQLException {
+        String counts = "select Strength from Inventory where Drug_ID=" + ID;
+        stat.execute(counts);
+        ResultSet count = stat.getResultSet();
+        return count.getString(1);
+    }
+
     //gets the string name of a certin drug id
     public String getDrug(int ID) throws SQLException {
         String drug = "select Drugs from Inventory where Drug_ID=" + ID;
@@ -51,7 +58,7 @@ public class DrugRepository {
 
     //gets the drug id of a given drug name
     public int getDrugID(String name) throws SQLException {
-        String drugID = "select Drug_ID from Inventory where name=" + name;
+        String drugID = "select Drug_ID from Inventory where Name = \'" + name + "\'";
         stat.execute(drugID);
         ResultSet drugid = stat.getResultSet();
         return drugid.getInt(1);
@@ -59,6 +66,7 @@ public class DrugRepository {
 
     //adds a drug to Inventory.. first part increments drug id
     public void addDrug(String name, String strength, int count) throws SQLException{
+        drugList.add(name);
         String getLength = "select count(*) as length from Inventory";
         stat.execute(getLength);
         ResultSet Length = stat.getResultSet();
@@ -76,7 +84,7 @@ public class DrugRepository {
 
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
     public ObservableList<String> getDrugList() throws SQLException {
-        String dugs = "select Drugs from Inventory";
+        String dugs = "select Name from Inventory";
         stat.execute(dugs);
         ResultSet drugs = stat.getResultSet();
         while (drugs.next()) {

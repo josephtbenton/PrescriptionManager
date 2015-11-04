@@ -85,11 +85,11 @@
                   <VBox prefHeight="400.0" prefWidth="200.0" style="-fx-padding: 7;" BorderPane.alignment="CENTER">
                      <children>
                         <TextField fx:id="drugSearch" promptText="Search" />
-                        <ListView fx:id="drugList" prefHeight="340.0" prefWidth="194.0" />
+                        <ListView fx:id="drugList" onMouseClicked="#drugSelect" prefHeight="340.0" prefWidth="194.0" />
                         <HBox style="-fx-padding: 5;">
                            <children>
                               <Button fx:id="drugAdd" mnemonicParsing="false" onAction="#drugAdd" prefHeight="0.0" prefWidth="27.0" text="+" />
-                              <Button fx:id="drugDel" mnemonicParsing="false" prefHeight="0.0" prefWidth="25.0" text="-" />
+                              <Button fx:id="drugDel" mnemonicParsing="false" onAction="#drugDelete" prefHeight="0.0" prefWidth="25.0" text="-" />
                            </children>
                         </HBox>
                      </children>

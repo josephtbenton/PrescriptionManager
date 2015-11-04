@@ -1,6 +1,7 @@
 package gui;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -56,12 +57,14 @@ public class Controller {
 
     //PatientRepository patientRepo;
     DrugRepository drugRepo;
+    ObservableList<String> drugListContents;
 
     @FXML
     public void initialize() {
         try {
             drugRepo = new DrugRepository();
-            drugList.setItems(drugRepo.getDrugList());
+            drugListContents = drugRepo.getDrugList();
+            drugList.setItems(drugListContents);
         } catch (ClassNotFoundException e) {
             Alert err = new Alert(Alert.AlertType.ERROR);
             err.setContentText(e.getMessage());
@@ -150,8 +153,42 @@ public class Controller {
                 e.printStackTrace();
             }
         });
-        drugList.refresh();
+    }
 
+    @FXML
+    public void drugSelect() {
+        String selected = (String) drugList.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            try {
+                int id = drugRepo.getDrugID(selected);
+                drugCount.setText(Integer.toString(drugRepo.getCount(id)));
+                drugName.setText(selected);
+                drugStrength.setText(drugRepo.getStrength(id));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            drugCount.clear();
+            drugName.clear();
+            drugStrength.clear();
+        }
+    }
+
+    @FXML
+    public void drugDelete() {
+        String selected = (String) drugList.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            try {
+                int id = drugRepo.getDrugID(selected);
+                drugRepo.removeDrug(id);
+                drugListContents.remove(selected);
+                drugCount.clear();
+                drugName.clear();
+                drugStrength.clear();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }
