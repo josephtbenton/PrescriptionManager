@@ -82,6 +82,7 @@ public class DrugRepository {
         stat.execute(remove);
     }
 
+
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
     public ObservableList<String> getDrugList() throws SQLException {
         String dugs = "select Name from Inventory";

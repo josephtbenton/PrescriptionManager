@@ -174,6 +174,7 @@ public class Controller {
         }
     }
 
+
     @FXML
     public void drugDelete() {
         String selected = (String) drugList.getSelectionModel().getSelectedItem();
