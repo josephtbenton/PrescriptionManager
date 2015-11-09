@@ -1,4 +1,4 @@
-package gui;
+package PrescriptionManager;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,4 +1,4 @@
-package gui;
+package PrescriptionManager;
 
 import java.sql.*;
 
