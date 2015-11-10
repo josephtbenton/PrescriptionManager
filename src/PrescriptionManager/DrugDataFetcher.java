@@ -7,16 +7,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DrugDataFetcher {
-    public static void main(String[] args)
-    {
-		// Try names such as atorvastatin, diazepam, lisinopril, naproxen, aspirin...
-        Scanner scan = new Scanner(System.in);
-        String input = null;
-        while (input != "close") {
-            input = scan.nextLine();
-            System.out.println(getUrlContents(input));
-        }
-    }
 
     public static String getUrlContents(String drug) {
         ArrayList<String> what = new ArrayList<String>();
