@@ -31,6 +31,10 @@ public class Controller {
     @FXML
     TextField drugCount;
 
+///////// TextAreas //////////////////////////
+    @FXML
+    TextArea drugInfo;
+
 ///////// List Views //////////////////////////
     @FXML
     ListView patientList;
@@ -154,16 +158,21 @@ public class Controller {
     @FXML
     public void drugSelect() {
         String selected = (String) drugList.getSelectionModel().getSelectedItem();
+        String[] nameAndStrength = selected.split(" - ");
+        System.out.println(selected);
+        System.out.println(nameAndStrength[0] + nameAndStrength[1]);
         if (selected != null) {
             try {
-                int id = drugRepo.getDrugID(selected);
+                int id = drugRepo.getDrugID(nameAndStrength[0], nameAndStrength[1]);
                 drugCount.setText(Integer.toString(drugRepo.getCount(id)));
-                drugName.setText(selected);
+                drugName.setText(nameAndStrength[0]);
                 drugStrength.setText(drugRepo.getStrength(id));
+                drugInfo.setText(DrugDataFetcher.getUrlContents(nameAndStrength[0]));
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         } else {
+            drugInfo.clear();
             drugCount.clear();
             drugName.clear();
             drugStrength.clear();
@@ -174,9 +183,11 @@ public class Controller {
     @FXML
     public void drugDelete() {
         String selected = (String) drugList.getSelectionModel().getSelectedItem();
+        String[] nameAndStrength = selected.split(" - ");
         if (selected != null) {
             try {
-                int id = drugRepo.getDrugID(selected);
+                int id = drugRepo.getDrugID(nameAndStrength[0], nameAndStrength[1]);
+                drugInfo.clear();
                 drugRepo.removeDrug(id);
                 drugListContents.remove(selected);
                 drugCount.clear();

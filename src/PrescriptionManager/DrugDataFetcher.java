@@ -18,7 +18,7 @@ public class DrugDataFetcher {
         }
     }
 
-    private static String getUrlContents(String drug) {
+    public static String getUrlContents(String drug) {
         ArrayList<String> what = new ArrayList<String>();
         try {
             URL url = new URL("http://www.drugs.com/" + drug + ".html");

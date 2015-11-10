@@ -1,22 +1,28 @@
 package PrescriptionManager;
 
-import java.sql.*;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-public class DrugRepository {
+
+import java.sql.*;
+
+public class PatientRepository {
     private Statement stat;
     private Connection con;
-    private ObservableList<String> drugList;
+    private ObservableList<String> patientList;
 
 
     //constructor creates a table if one does not exist else just initializes connection to sqlite
-    public DrugRepository() throws ClassNotFoundException, SQLException {
+    public PatientRepository() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        con = DriverManager.getConnection("jdbc:sqlite:prescriptionDB");
+        con = DriverManager.getConnection("jdbc:sqlite:prescriptions.db");
         stat = con.createStatement();
-        this.drugList = FXCollections.observableArrayList();
-        String create = "CREATE TABLE IF NOT EXISTS Inventory (Drug_ID INT, Name CHAR(255), Strength CHAR(255), Count INT)";
+        this.patientList = FXCollections.observableArrayList();
+        String create = "CREATE TABLE IF NOT EXISTS patients (" +
+                "pid INT," +
+                " firstname CHAR(255)," +
+                " lastname CHAR(255)," +
+                " dob CHAR(255)";
+        DatabaseMetaData base = con.getMetaData();
         stat.execute(create);
     }
 
@@ -53,22 +59,22 @@ public class DrugRepository {
     }
 
     //gets the drug id of a given drug name
-    public int getDrugID(String name , String strength) throws SQLException {
-        String drugID = "SELECT Drug_ID FROM Inventory WHERE Name = \'" + name + "\' AND Strength = \'" + strength + "\'" ;
+    public int getDrugID(String firstName, String lastName, String dob) throws SQLException {
+        String drugID = "select Drug_ID from Inventory where Name = \'" + firstName + "\'";
         stat.execute(drugID);
-        ResultSet result = stat.getResultSet();
-        return result.getInt(1);
+        ResultSet drugid = stat.getResultSet();
+        return drugid.getInt(1);
     }
 
     //adds a drug to Inventory.. first part increments drug id
-    public void addDrug(String name, String strength, int count) throws SQLException{
-        drugList.add(name + " - " + strength);
-        String getLength = "select count(*) as length from Inventory";
+    public void addPatient(String firstName, String lastName, String dob) throws SQLException {
+        patientList.add(firstName + " " + lastName);
+        String getLength = "SELECT pid(*) AS LENGTH FROM patients";
         stat.execute(getLength);
         ResultSet Length = stat.getResultSet();
         int length = Length.getInt(1);
         length +=1;
-        String insert = "insert into Inventory values (" + length + ", \'" + name + "\', \'" + strength + "\', " + count + ")";
+        String insert = "INSERT INTO patients VALUES (" + length + ", \'" + firstName + "\', \'" + lastName + "\', " + dob + ")";
         stat.execute(insert);
     }
 
@@ -81,14 +87,14 @@ public class DrugRepository {
 
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
     public ObservableList<String> getDrugList() throws SQLException {
-        String dugs = "select Name, Strength from Inventory";
+        String dugs = "select Name from Inventory";
         stat.execute(dugs);
         ResultSet drugs = stat.getResultSet();
         while (drugs.next()) {
-            drugList.add(drugs.getString(1) + " - " + drugs.getString(2));
+            patientList.add(drugs.getString(1));
         }
 
-        return drugList;
+        return patientList;
     }
 
 
