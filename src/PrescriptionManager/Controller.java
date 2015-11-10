@@ -55,9 +55,11 @@ public class Controller {
     @FXML
     Button drugDel;
 
-    //PatientRepository patientRepo;
+    PatientRepository patientRepo;
     DrugRepository drugRepo;
     ObservableList<String> drugListContents;
+    ObservableList<String> patientListContents;
+
 
     @FXML
     public void initialize() {
@@ -65,6 +67,9 @@ public class Controller {
             drugRepo = new DrugRepository();
             drugListContents = drugRepo.getDrugList();
             drugList.setItems(drugListContents);
+            patientRepo = new PatientRepository();
+            patientListContents = patientRepo.getPatientList();
+            patientList.setItems(patientListContents);
         } catch (ClassNotFoundException e) {
             Alert err = new Alert(Alert.AlertType.ERROR);
             err.setContentText(e.getMessage());
@@ -156,11 +161,85 @@ public class Controller {
     }
 
     @FXML
+    public void patientAdd() {
+        // Create the custom dialog.
+        Dialog<ArrayList<String>> dialog = new Dialog<>();
+        dialog.setHeaderText("Add A Patient");
+
+// Set the button types.
+        ButtonType loginButtonType = new ButtonType("Add", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+// Create the username and password labels and fields.
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField firstname = new TextField();
+        firstname.setPromptText("John");
+        TextField lastname = new TextField();
+        lastname.setPromptText("Doe");
+        TextField dob = new TextField();
+        dob.setPromptText("MM/DD/YYYY");
+
+        grid.add(new Label("First Name:"), 0, 0);
+        grid.add(firstname, 1, 0);
+        grid.add(new Label("Last Name:"), 0, 1);
+        grid.add(lastname, 1, 1);
+        grid.add(new Label("Date Of Birth:"), 0, 2);
+        grid.add(dob, 1, 2);
+
+// Enable/Disable login button depending on whether a username was entered.
+        Node loginButton = dialog.getDialogPane().lookupButton(loginButtonType);
+        loginButton.setDisable(true);
+
+// Do some validation (using the Java 8 lambda syntax).
+        firstname.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+        lastname.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+        dob.textProperty().addListener((observable, oldValue, newValue) -> {
+            loginButton.setDisable(newValue.trim().isEmpty());
+        });
+
+        dialog.getDialogPane().setContent(grid);
+
+// Request focus on the button by default.
+
+
+// Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                ArrayList<String> res = new ArrayList<>();
+                res.add(firstname.getText());
+                res.add(lastname.getText());
+                res.add(dob.getText());
+                return res;
+            }
+            return null;
+        });
+
+        Optional<ArrayList<String>> result = dialog.showAndWait();
+
+        result.ifPresent(results -> {
+            try {
+                patientRepo.addPatient(results.get(0), results.get(1), results.get(2));
+            } catch (SQLException e) {
+                Alert err = new Alert(Alert.AlertType.ERROR);
+                err.setContentText(e.getMessage());
+                err.show();
+                e.printStackTrace();
+            }
+        });
+    }
+
+    @FXML
     public void drugSelect() {
         String selected = (String) drugList.getSelectionModel().getSelectedItem();
         String[] nameAndStrength = selected.split(" - ");
-        System.out.println(selected);
-        System.out.println(nameAndStrength[0] + nameAndStrength[1]);
         if (selected != null) {
             try {
                 int id = drugRepo.getDrugID(nameAndStrength[0], nameAndStrength[1]);

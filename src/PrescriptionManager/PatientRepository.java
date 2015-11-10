@@ -21,19 +21,10 @@ public class PatientRepository {
                 "pid INT," +
                 " firstname CHAR(255)," +
                 " lastname CHAR(255)," +
-                " dob CHAR(255)";
-        DatabaseMetaData base = con.getMetaData();
+                " dob CHAR(255))";
         stat.execute(create);
     }
 
-    //updates the count of a given drug id
-    public void updateCount(int ID, int update) throws SQLException {
-        int count = getCount(ID);
-        count = count + update;
-        String updateCount = "Update Inventory set Count=" + count + "where Drug_ID=" + ID;
-        stat.execute(updateCount);
-
-    }
 
     //gets the count of a given drug id
     public int getCount(int ID) throws SQLException {
@@ -59,8 +50,8 @@ public class PatientRepository {
     }
 
     //gets the drug id of a given drug name
-    public int getDrugID(String firstName, String lastName, String dob) throws SQLException {
-        String drugID = "select Drug_ID from Inventory where Name = \'" + firstName + "\'";
+    public int getPID(String firstName, String lastName, String dob) throws SQLException {
+        String drugID = "SELECT pid FROM patients where Name = \'" + firstName + "\' AND lastname = \'" + lastName + "\' AND dob = \'" + dob + "\'";
         stat.execute(drugID);
         ResultSet drugid = stat.getResultSet();
         return drugid.getInt(1);
@@ -80,20 +71,19 @@ public class PatientRepository {
 
     //removes a drug given a drug Id
     public void removeDrug(int ID) throws SQLException {
-        String remove = "delete from Inventory where Drug_ID=" +ID;
+        String remove = "delete from Inventory where Drug_ID=" + ID;
         stat.execute(remove);
     }
 
 
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
-    public ObservableList<String> getDrugList() throws SQLException {
-        String dugs = "select Name from Inventory";
-        stat.execute(dugs);
-        ResultSet drugs = stat.getResultSet();
-        while (drugs.next()) {
-            patientList.add(drugs.getString(1));
+    public ObservableList<String> getPatientList() throws SQLException {
+        String pats = "select Name from Inventory";
+        stat.execute(pats);
+        ResultSet patients = stat.getResultSet();
+        while (patients.next()) {
+            patientList.add(patients.getString(1));
         }
-
         return patientList;
     }
 

@@ -13,7 +13,7 @@ public class DrugRepository {
     //constructor creates a table if one does not exist else just initializes connection to sqlite
     public DrugRepository() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        con = DriverManager.getConnection("jdbc:sqlite:prescriptionDB");
+        con = DriverManager.getConnection("jdbc:sqlite:prescriptions.db");
         stat = con.createStatement();
         this.drugList = FXCollections.observableArrayList();
         String create = "CREATE TABLE IF NOT EXISTS Inventory (Drug_ID INT, Name CHAR(255), Strength CHAR(255), Count INT)";
@@ -24,21 +24,21 @@ public class DrugRepository {
     public void updateCount(int ID, int update) throws SQLException {
         int count = getCount(ID);
         count = count + update;
-        String updateCount = "Update Inventory set Count=" + count + "where Drug_ID=" + ID;
+        String updateCount = "UPDATE Inventory SET Count=" + count + "WHERE Drug_ID=" + ID;
         stat.execute(updateCount);
 
     }
 
     //gets the count of a given drug id
     public int getCount(int ID) throws SQLException {
-        String counts = "select Count from Inventory where Drug_ID=" + ID;
+        String counts = "SELECT Count FROM Inventory WHERE Drug_ID=" + ID;
         stat.execute(counts);
         ResultSet count = stat.getResultSet();
         return count.getInt(1);
     }
 
     public String getStrength(int ID) throws SQLException {
-        String counts = "select Strength from Inventory where Drug_ID=" + ID;
+        String counts = "SELECT Strength FROM Inventory WHERE Drug_ID=" + ID;
         stat.execute(counts);
         ResultSet count = stat.getResultSet();
         return count.getString(1);
@@ -46,7 +46,7 @@ public class DrugRepository {
 
     //gets the string name of a certin drug id
     public String getDrug(int ID) throws SQLException {
-        String drug = "select Drugs from Inventory where Drug_ID=" + ID;
+        String drug = "SELECT Drugs FROM Inventory WHERE Drug_ID=" + ID;
         stat.execute(drug);
         ResultSet drugs = stat.getResultSet();
         return drugs.getNString(1);
@@ -63,25 +63,25 @@ public class DrugRepository {
     //adds a drug to Inventory.. first part increments drug id
     public void addDrug(String name, String strength, int count) throws SQLException{
         drugList.add(name + " - " + strength);
-        String getLength = "select count(*) as length from Inventory";
+        String getLength = "SELECT count(*) AS length FROM Inventory";
         stat.execute(getLength);
         ResultSet Length = stat.getResultSet();
         int length = Length.getInt(1);
         length +=1;
-        String insert = "insert into Inventory values (" + length + ", \'" + name + "\', \'" + strength + "\', " + count + ")";
+        String insert = "INSERT INTO Inventory VALUES (" + length + ", \'" + name + "\', \'" + strength + "\', " + count + ")";
         stat.execute(insert);
     }
 
     //removes a drug given a drug Id
     public void removeDrug(int ID) throws SQLException {
-        String remove = "delete from Inventory where Drug_ID=" +ID;
+        String remove = "DELETE FROM Inventory WHERE Drug_ID=" +ID;
         stat.execute(remove);
     }
 
 
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
     public ObservableList<String> getDrugList() throws SQLException {
-        String dugs = "select Name, Strength from Inventory";
+        String dugs = "SELECT Name, Strength FROM Inventory";
         stat.execute(dugs);
         ResultSet drugs = stat.getResultSet();
         while (drugs.next()) {

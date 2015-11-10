@@ -8,14 +8,14 @@ import javafx.collections.*;
 public class PrescriptionRepository {
 	private Statement stat;
 	private Connection con;
-	private ObservableList<String> prescriptionrepo;
+	private ObservableList<String> prescriptionList;
 	
 	
 	public PrescriptionRepository() throws ClassNotFoundException, SQLException{
 		Class.forName("org.sqlite.JDBC");
-		con = DriverManager.getConnection("jdbc:sqlite:prescriptionDB");
+		con = DriverManager.getConnection("jdbc:sqlite:prescriptions.db");
 		stat = con.createStatement();
-		this.prescriptionrepo = FXCollections.observableArrayList();
+		this.prescriptionList = FXCollections.observableArrayList();
 		String create = "create table if not exists Prescriptions (pid INT, did INT, quantity INT)";
 		stat.execute(create);
 	}
@@ -28,6 +28,5 @@ public class PrescriptionRepository {
 		String remove = "delete from Prescriptions where (pid=" + pid + "and did=" + did + ")";
 		stat.execute(remove);
 	}
-	
 
 }
