@@ -16,12 +16,8 @@ public class DrugRepository {
         con = DriverManager.getConnection("jdbc:sqlite:prescriptionDB");
         stat = con.createStatement();
         this.drugList = FXCollections.observableArrayList();
-        String create = "Create table Inventory (Drug_ID INT, Name CHAR(255), Strength CHAR(255), Count INT)";
-        DatabaseMetaData base = con.getMetaData();
-        ResultSet alreadyExists = base.getTables(null, null, "Inventory", null);
-        if (!alreadyExists.next()) {
-            stat.execute(create);
-        }
+        String create = "Create table IF NOT EXISTS Inventory (Drug_ID INT, Name CHAR(255), Strength CHAR(255), Count INT)";
+        stat.execute(create);
     }
 
     //updates the count of a given drug id
