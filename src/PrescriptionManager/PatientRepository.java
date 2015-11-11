@@ -23,14 +23,14 @@ public class PatientRepository {
 
     //gets the drug id of a given drug name
     public int getPID(String firstName, String lastName, String dob) throws SQLException {
-        String drugID = "SELECT pid FROM patients where Name = \'" + firstName + "\' AND lastname = \'" + lastName + "\' AND dob = \'" + dob + "\'";
+        String drugID = "SELECT pid FROM patients WHERE Name = \'" + firstName + "\' AND lastname = \'" + lastName + "\' AND dob = \'" + dob + "\'";
         stat.execute(drugID);
         ResultSet drugid = stat.getResultSet();
         return drugid.getInt(1);
     }
     
     public String getDOB(int Pid) throws SQLException {
-        String DOB = "SELECT dob FROM patients where pid = " + Pid;
+        String DOB = "SELECT dob FROM patients WHERE pid = " + Pid;
         stat.execute(DOB);
         ResultSet drugid = stat.getResultSet();
         System.out.println(drugid.getString(1));
@@ -51,7 +51,7 @@ public class PatientRepository {
 
     //removes a drug given a drug Id
     public void removePatient(int ID) throws SQLException {
-        String remove = "delete from patients where Drug_ID=" + ID;
+        String remove = "DELETE FROM patients WHERE Drug_ID=" + ID;
         stat.execute(remove);
     }
 
@@ -59,7 +59,7 @@ public class PatientRepository {
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
     public ObservableList<String> getPatientList() throws SQLException {
     	if (patientList.isEmpty()) {
-	        String pats = "select firstname, lastname, pid from patients";
+	        String pats = "SELECT firstname, lastname, pid FROM patients";
 	        stat.execute(pats);
 	        ResultSet patients = stat.getResultSet();
 	        while (patients.next()) {
