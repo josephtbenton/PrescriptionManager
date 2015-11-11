@@ -257,11 +257,11 @@ public class Controller {
     @FXML
     public void patientDelete() {
     	String selected = (String) patientList.getSelectionModel().getSelectedItem();
-        String[] lastName = selected.split(", ");
-        String[] lastThenFirst = lastName[1].split(" ");
-        String pid = lastThenFirst[1].substring(1, lastThenFirst[1].length() - 1);
-        int Pid = Integer.parseInt(pid);
         if (selected != null) {
+        	String[] lastName = selected.split(", ");
+            String[] lastThenFirst = lastName[1].split(" ");
+            String pid = lastThenFirst[1].substring(1, lastThenFirst[1].length() - 1);
+            int Pid = Integer.parseInt(pid);
             try {
             	patientLast.clear();
     			patientFirst.clear();
@@ -300,8 +300,8 @@ public class Controller {
     @FXML
     public void drugDelete() {
         String selected = (String) drugList.getSelectionModel().getSelectedItem();
-        String[] nameAndStrength = selected.split(" - ");
         if (selected != null) {
+        	String[] nameAndStrength = selected.split(" - ");
             try {
                 int id = drugRepo.getDrugID(nameAndStrength[0], nameAndStrength[1]);
                 drugInfo.clear();
