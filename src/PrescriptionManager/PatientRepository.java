@@ -17,11 +17,7 @@ public class PatientRepository {
         con = DriverManager.getConnection("jdbc:sqlite:prescriptions.db");
         stat = con.createStatement();
         this.patientList = FXCollections.observableArrayList();
-        String create = "CREATE TABLE IF NOT EXISTS patients (" +
-                "pid INT," +
-                " firstname CHAR(255)," +
-                " lastname CHAR(255)," +
-                " dob CHAR(255))";
+        String create = "CREATE TABLE IF NOT EXISTS patients (pid INT, firstname CHAR(255), lastname CHAR(255), dob CHAR(255))";
         stat.execute(create);
     }
 
@@ -36,8 +32,8 @@ public class PatientRepository {
     //adds a drug to Inventory.. first part increments drug id
     public void addPatient(String firstName, String lastName, String dob) throws SQLException {
         patientList.add(firstName + " " + lastName);
-        String getLength = "SELECT pid(*) AS LENGTH FROM patients";
-        stat.execute(getLength);
+        String lengthOf = "SELECT count(*) AS length FROM patients";
+        stat.execute(lengthOf);
         ResultSet Length = stat.getResultSet();
         int length = Length.getInt(1);
         length +=1;

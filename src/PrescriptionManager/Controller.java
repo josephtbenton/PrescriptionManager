@@ -226,6 +226,9 @@ public class Controller {
 
         result.ifPresent(results -> {
             try {
+            	System.out.println(results.get(0));
+            	System.out.println(results.get(1));
+            	System.out.println(results.get(2));
                 patientRepo.addPatient(results.get(0), results.get(1), results.get(2));
             } catch (SQLException e) {
                 Alert err = new Alert(Alert.AlertType.ERROR);
@@ -277,5 +280,6 @@ public class Controller {
             }
         }
     }
-
+    
+   
 }
