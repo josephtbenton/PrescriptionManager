@@ -22,12 +22,12 @@
                         <ListView fx:id="patientList" onKeyReleased="#patientSelect" onMouseClicked="#patientSelect" prefHeight="289.0" prefWidth="198.0" />
                         <HBox prefHeight="0.0" prefWidth="182.0" style="-fx-padding: 5;">
                            <children>
-                              <Button fx:id="patientAdd" mnemonicParsing="false" onAction="#patientAdd" prefHeight="27.0" prefWidth="23.0" text="+">
+                              <Button fx:id="patientAdd" mnemonicParsing="false" onAction="#patientAdd" prefHeight="30.0" prefWidth="30.0" text="+">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>
                               </Button>
-                              <Button fx:id="patientDel" mnemonicParsing="false" onAction="#patientDelete" prefHeight="27.0" prefWidth="0.0" text="-" />
+                              <Button fx:id="patientDel" mnemonicParsing="false" onAction="#patientDelete" prefHeight="30.0" prefWidth="30.0" text="-" />
                            </children>
                            <opaqueInsets>
                               <Insets />
@@ -59,11 +59,11 @@
                            </children>
                         </GridPane>
                         <Label text="Prescriptions:" />
-                        <ListView prefHeight="200.0" prefWidth="200.0" />
+                        <ListView fx:id="pscripList" prefHeight="200.0" prefWidth="200.0" />
                         <HBox prefHeight="30.0" prefWidth="515.0" style="-fx-padding: 5;">
                            <children>
-                              <Button fx:id="pscripAdd" mnemonicParsing="false" prefHeight="27.0" prefWidth="9.0" text="+" />
-                              <Button fx:id="pscripDel" mnemonicParsing="false" prefHeight="27.0" prefWidth="0.0" text="-" />
+                              <Button fx:id="pscripAdd" mnemonicParsing="false" onAction="#prescriptionAdd" prefHeight="30.0" prefWidth="30.0" text="+" />
+                              <Button fx:id="pscripDel" mnemonicParsing="false" onAction="#prescriptionDelete" prefHeight="30.0" prefWidth="30.0" text="-" />
                            </children>
                         </HBox>
                      </children>
