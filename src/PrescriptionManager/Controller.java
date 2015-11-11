@@ -226,9 +226,6 @@ public class Controller {
 
         result.ifPresent(results -> {
             try {
-            	System.out.println(results.get(0));
-            	System.out.println(results.get(1));
-            	System.out.println(results.get(2));
                 patientRepo.addPatient(results.get(0), results.get(1), results.get(2));
             } catch (SQLException e) {
                 Alert err = new Alert(Alert.AlertType.ERROR);
@@ -237,6 +234,24 @@ public class Controller {
                 e.printStackTrace();
             }
         });
+    }
+    
+    @FXML
+    public void patientSelect() throws SQLException {
+        String selected = (String) patientList.getSelectionModel().getSelectedItem();
+        String[] lastName = selected.split(", ");
+        String[] lastThenFirst = lastName[1].split(" ");
+        String pid = lastThenFirst[1].substring(1, lastThenFirst[1].length() - 1);
+        int Pid = Integer.parseInt(pid);
+        String DOB = patientRepo.getDOB(Pid);
+        if (selected != null) {
+            patientLast.setText(lastName[0]);
+			patientFirst.setText(lastThenFirst[0]);
+			patientDOB.setText(DOB);
+        } else {
+            patientLast.clear();
+            patientFirst.clear();
+        }
     }
 
     @FXML

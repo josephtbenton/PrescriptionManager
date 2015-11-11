@@ -12,18 +12,18 @@ public class DrugDataFetcher {
 	private static int endDescription = 2;
 
     public static String getUrlContents(String drug) {
-        ArrayList<String> what = new ArrayList<String>();
+        ArrayList<String> urlContents = new ArrayList<String>();
         try {
             URL url = new URL("http://www.drugs.com/" + drug + ".html");
             URLConnection urlConnection = url.openConnection();
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
-                what.add(line);
+                urlContents.add(line);
             }
             bufferedReader.close();
-            String description = what.get(descriptionLine);
-            description = description.substring(36, description.length() - 2);
+            String description = urlContents.get(descriptionLine);
+            description = description.substring(startDescription, description.length() - endDescription);
             return description;
         }
         catch(Exception e) {

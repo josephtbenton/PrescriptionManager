@@ -28,17 +28,25 @@ public class PatientRepository {
         ResultSet drugid = stat.getResultSet();
         return drugid.getInt(1);
     }
+    
+    public String getDOB(int Pid) throws SQLException {
+        String DOB = "SELECT dob FROM patients where pid = " + Pid;
+        stat.execute(DOB);
+        ResultSet drugid = stat.getResultSet();
+        System.out.println(drugid.getString(1));
+        return drugid.getString(1);
+    }
 
     //adds a drug to Inventory.. first part increments drug id
     public void addPatient(String firstName, String lastName, String dob) throws SQLException {
-        patientList.add(firstName + " " + lastName);
         String lengthOf = "SELECT count(*) AS length FROM patients";
         stat.execute(lengthOf);
         ResultSet Length = stat.getResultSet();
         int length = Length.getInt(1);
         length +=1;
-        String insert = "INSERT INTO patients VALUES (" + length + ", \'" + firstName + "\', \'" + lastName + "\', " + dob + ")";
+        String insert = "INSERT INTO patients VALUES (" + length + ", \'" + firstName + "\', \'" + lastName + "\', \'" + dob + "\')";
         stat.execute(insert);
+        patientList.add(lastName + ", " + firstName + " (" + length + ")");
     }
 
     //removes a drug given a drug Id
@@ -50,12 +58,14 @@ public class PatientRepository {
 
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
     public ObservableList<String> getPatientList() throws SQLException {
-        String pats = "select firstname, lastname from patients";
-        stat.execute(pats);
-        ResultSet patients = stat.getResultSet();
-        while (patients.next()) {
-            patientList.add(patients.getString(1));
-        }
+    	if (patientList.isEmpty()) {
+	        String pats = "select firstname, lastname, pid from patients";
+	        stat.execute(pats);
+	        ResultSet patients = stat.getResultSet();
+	        while (patients.next()) {
+	            patientList.add(patients.getString(2) +  ", " + patients.getString(1) + " (" + patients.getInt(3) + ")");
+	        }
+    	}
         return patientList;
     }
 
