@@ -25,30 +25,6 @@ public class PatientRepository {
         stat.execute(create);
     }
 
-
-    //gets the count of a given drug id
-    public int getCount(int ID) throws SQLException {
-        String counts = "select Count from Inventory where Drug_ID=" + ID;
-        stat.execute(counts);
-        ResultSet count = stat.getResultSet();
-        return count.getInt(1);
-    }
-
-    public String getStrength(int ID) throws SQLException {
-        String counts = "select Strength from Inventory where Drug_ID=" + ID;
-        stat.execute(counts);
-        ResultSet count = stat.getResultSet();
-        return count.getString(1);
-    }
-
-    //gets the string name of a certin drug id
-    public String getDrug(int ID) throws SQLException {
-        String drug = "select Drugs from Inventory where Drug_ID=" + ID;
-        stat.execute(drug);
-        ResultSet drugs = stat.getResultSet();
-        return drugs.getNString(1);
-    }
-
     //gets the drug id of a given drug name
     public int getPID(String firstName, String lastName, String dob) throws SQLException {
         String drugID = "SELECT pid FROM patients where Name = \'" + firstName + "\' AND lastname = \'" + lastName + "\' AND dob = \'" + dob + "\'";
@@ -70,15 +46,15 @@ public class PatientRepository {
     }
 
     //removes a drug given a drug Id
-    public void removeDrug(int ID) throws SQLException {
-        String remove = "delete from Inventory where Drug_ID=" + ID;
+    public void removePatient(int ID) throws SQLException {
+        String remove = "delete from patients where Drug_ID=" + ID;
         stat.execute(remove);
     }
 
 
     //ONLY CALL THIS ONCE in the CONTROllER so far since it adds to the list... will fix
     public ObservableList<String> getPatientList() throws SQLException {
-        String pats = "select Name from Inventory";
+        String pats = "select firstname, lastname from patients";
         stat.execute(pats);
         ResultSet patients = stat.getResultSet();
         while (patients.next()) {

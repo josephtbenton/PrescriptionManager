@@ -22,7 +22,7 @@
                         <ListView fx:id="patientList" prefHeight="289.0" prefWidth="198.0" />
                         <HBox prefHeight="0.0" prefWidth="182.0" style="-fx-padding: 5;">
                            <children>
-                              <Button fx:id="patientAdd" mnemonicParsing="false" prefHeight="27.0" prefWidth="23.0" text="+">
+                              <Button fx:id="patientAdd" mnemonicParsing="false" onAction="#patientAdd" prefHeight="27.0" prefWidth="23.0" text="+">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>

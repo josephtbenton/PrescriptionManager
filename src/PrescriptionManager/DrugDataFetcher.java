@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class DrugDataFetcher {
+	private static int descriptionLine = 7;
+	private static int startDescription = 36;
+	private static int endDescription = 2;
 
     public static String getUrlContents(String drug) {
         ArrayList<String> what = new ArrayList<String>();
@@ -19,7 +22,7 @@ public class DrugDataFetcher {
                 what.add(line);
             }
             bufferedReader.close();
-            String description = what.get(7);
+            String description = what.get(descriptionLine);
             description = description.substring(36, description.length() - 2);
             return description;
         }
