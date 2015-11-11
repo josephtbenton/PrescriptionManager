@@ -16,16 +16,16 @@ public class PrescriptionRepository {
 		con = DriverManager.getConnection("jdbc:sqlite:prescriptions.db");
 		stat = con.createStatement();
 		this.prescriptionList = FXCollections.observableArrayList();
-		String create = "create table if not exists Prescriptions (pid INT, did INT, quantity INT)";
+		String create = "CREATE TABLE IF NOT EXISTS Prescriptions (pid INT, did INT, quantity INT)";
 		stat.execute(create);
 	}
 	
 	public void addPrescription(int pid, int did, int quantity) {
-		String insert = "insert into Prescription values (" + pid + ", " +  did + ", "  + quantity + ")";
+		String insert = "INSERT INTO Prescription VALUES (" + pid + ", " +  did + ", "  + quantity + ")";
 	}
 	
 	public void removePresripction(int pid, int did) throws SQLException {
-		String remove = "delete from Prescriptions where (pid=" + pid + "and did=" + did + ")";
+		String remove = "DELETE FROM Prescriptions WHERE (pid=" + pid + "AND did=" + did + ")";
 		stat.execute(remove);
 	}
 
