@@ -27,7 +27,7 @@
                                     <Insets />
                                  </opaqueInsets>
                               </Button>
-                              <Button fx:id="patientDel" mnemonicParsing="false" prefHeight="27.0" prefWidth="0.0" text="-" />
+                              <Button fx:id="patientDel" mnemonicParsing="false" onAction="#patientDelete" prefHeight="27.0" prefWidth="0.0" text="-" />
                            </children>
                            <opaqueInsets>
                               <Insets />

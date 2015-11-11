@@ -33,7 +33,6 @@ public class PatientRepository {
         String DOB = "SELECT dob FROM patients where pid = " + Pid;
         stat.execute(DOB);
         ResultSet drugid = stat.getResultSet();
-        System.out.println(drugid.getString(1));
         return drugid.getString(1);
     }
 
@@ -51,7 +50,7 @@ public class PatientRepository {
 
     //removes a drug given a drug Id
     public void removePatient(int ID) throws SQLException {
-        String remove = "delete from patients where Drug_ID=" + ID;
+        String remove = "delete from patients where pid=" + ID;
         stat.execute(remove);
     }
 

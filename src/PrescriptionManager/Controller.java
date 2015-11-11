@@ -253,6 +253,26 @@ public class Controller {
             patientFirst.clear();
         }
     }
+    
+    @FXML
+    public void patientDelete() {
+    	String selected = (String) patientList.getSelectionModel().getSelectedItem();
+        String[] lastName = selected.split(", ");
+        String[] lastThenFirst = lastName[1].split(" ");
+        String pid = lastThenFirst[1].substring(1, lastThenFirst[1].length() - 1);
+        int Pid = Integer.parseInt(pid);
+        if (selected != null) {
+            try {
+            	patientLast.clear();
+    			patientFirst.clear();
+    			patientDOB.clear();
+    			patientRepo.removePatient(Pid);
+    			patientListContents.remove(selected);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @FXML
     public void drugSelect() {
