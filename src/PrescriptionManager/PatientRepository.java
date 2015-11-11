@@ -37,8 +37,9 @@ public class PatientRepository {
         String DOB = "SELECT dob FROM patients WHERE pid = " + Pid;
         stat.execute(DOB);
         ResultSet drugid = stat.getResultSet();
+        String dateOfBirth = drugid.getString(1);
         con.close();
-        return drugid.getString(1);
+        return dateOfBirth;
     }
 
     //adds a drug to Inventory.. first part increments drug id

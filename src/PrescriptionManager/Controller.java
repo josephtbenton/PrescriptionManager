@@ -244,6 +244,7 @@ public class Controller {
         String pid = lastThenFirst[1].substring(1, lastThenFirst[1].length() - 1);
         int Pid = Integer.parseInt(pid);
         String DOB = patientRepo.getDOB(Pid);
+        System.out.println(DOB);
         if (selected != null) {
             patientLast.setText(lastName[0]);
 			patientFirst.setText(lastThenFirst[0]);
@@ -251,6 +252,7 @@ public class Controller {
         } else {
             patientLast.clear();
             patientFirst.clear();
+            patientDOB.clear();
         }
     }
     
